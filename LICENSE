@@ -1,17 +1,21 @@
-个人及非商业用途许可协议 (Non-Commercial License)
+MIT License
 
-版权所有 (c) 2026 mumu_xsy
+Copyright (c) 2026 mumu_xsy
 
-本软件仅供个人学习、研究及非商业性使用。在满足以下条件的前提下，允许个人免费使用及修改本软件：
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
 
-1. 署名义务：在使用、修改或分发本软件时，必须在显著位置保留原作者（mumu_xsy）的署名及项目仓库链接。
-2. 非商业限制：未经原作者书面授权，严禁将本软件及其衍生版本用于任何形式的盈利性活动，包括但不限于：
-   - 作为有偿服务出售；
-   - 在商业平台（如淘宝、闲鱼等）进行代部署或二次打包售卖；
-   - 包含在收费的课程、付费社群或商业软件中。
-3. 相同方式共享：如果您对本软件进行了修改并分发，必须采用本协议相同的条款进行分发。
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
 
-商业授权：
-如需将本软件用于商业用途或通过本软件获取收益，请务必联系作者进行授权。未经授权的商业利用行为，原作者保留追究法律责任的权利。
-
-联系方式：https://gitcode.com/mumu_xsy
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.

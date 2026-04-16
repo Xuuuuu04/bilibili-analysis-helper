@@ -3,146 +3,717 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BiliBili Summarize - 即将上线</title>
+    <title>BiliBili Summarize | AI 视频深度分析助手</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Crect width='40' height='40' rx='8' fill='%23FB7299'/%3E%3Cpath d='M11 15H29V27H11V15Z' fill='white'/%3E%3Cpath d='M14 11L18 15' stroke='white' stroke-width='2.5' stroke-linecap='round'/%3E%3Cpath d='M26 11L22 15' stroke='white' stroke-width='2.5' stroke-linecap='round'/%3E%3Ccircle cx='16' cy='20' r='1.5' fill='%23FB7299'/%3E%3Ccircle cx='24' cy='20' r='1.5' fill='%23FB7299'/%3E%3Cpath d='M18 23.5H22' stroke='%23FB7299' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E">
+    <!-- Marked.js 用于渲染Markdown -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/wordcloud@1.2.2/src/wordcloud2.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&display=swap" rel="stylesheet">
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body {
-            font-family: 'Noto Sans SC', -apple-system, BlinkMacSystemFont, sans-serif;
-            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #fff;
-        }
-        .container {
-            text-align: center;
-            padding: 40px;
-            max-width: 600px;
-        }
-        .logo {
-            width: 80px;
-            height: 80px;
-            margin: 0 auto 30px;
-            background: #FB7299;
-            border-radius: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 36px;
-            box-shadow: 0 10px 30px rgba(251, 114, 153, 0.3);
-        }
-        h1 {
-            font-size: 2.5rem;
-            margin-bottom: 15px;
-            font-weight: 700;
-        }
-        h1 span {
-            background: linear-gradient(90deg, #FB7299, #00AEEC);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-        .tagline {
-            font-size: 1.1rem;
-            color: rgba(255,255,255,0.7);
-            margin-bottom: 40px;
-        }
-        .status-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            background: rgba(251, 114, 153, 0.2);
-            border: 1px solid rgba(251, 114, 153, 0.4);
-            padding: 10px 24px;
-            border-radius: 50px;
-            font-size: 0.95rem;
-            margin-bottom: 50px;
-        }
-        .pulse {
-            width: 10px;
-            height: 10px;
-            background: #FB7299;
-            border-radius: 50%;
-            animation: pulse 2s infinite;
-        }
-        @keyframes pulse {
-            0%, 100% { opacity: 1; transform: scale(1); }
-            50% { opacity: 0.5; transform: scale(1.2); }
-        }
-        .features {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 20px;
-            text-align: left;
-        }
-        .feature {
-            background: rgba(255,255,255,0.05);
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 12px;
-            padding: 20px;
-            transition: all 0.3s ease;
-        }
-        .feature:hover {
-            background: rgba(255,255,255,0.08);
-            transform: translateY(-2px);
-        }
-        .feature h3 {
-            font-size: 1rem;
-            margin-bottom: 8px;
-            color: #FB7299;
-        }
-        .feature p {
-            font-size: 0.85rem;
-            color: rgba(255,255,255,0.6);
-            line-height: 1.5;
-        }
-        .footer {
-            margin-top: 50px;
-            font-size: 0.85rem;
-            color: rgba(255,255,255,0.4);
-        }
-        .footer a {
-            color: #FB7299;
-            text-decoration: none;
-        }
-    </style>
 </head>
-<body>
-    <div class="container">
-        <div class="logo">B</div>
-        <h1>BiliBili <span>Summarize</span></h1>
-        <p class="tagline">AI 视频深度分析助手 - 敬请期待</p>
-
-        <div class="status-badge">
-            <span class="pulse"></span>
-            <span>系统维护升级中</span>
-        </div>
-
-        <div class="features">
-            <div class="feature">
-                <h3>AI 视频总结</h3>
-                <p>智能提取视频核心内容，自动生成章节摘要</p>
-            </div>
-            <div class="feature">
-                <h3>弹幕舆情分析</h3>
-                <p>深度解析弹幕热梗，洞察观众真实反馈</p>
-            </div>
-            <div class="feature">
-                <h3>智能对话问答</h3>
-                <p>基于视频内容，AI 实时解答你的疑问</p>
-            </div>
-            <div class="feature">
-                <h3>深度研究报告</h3>
-                <p>一键生成专业视频分析报告，支持导出</p>
+<body data-mode="research">
+    <!-- 顶部导航栏 -->
+    <header class="main-header">
+        <div class="logo-area" onclick="goHome()">
+            <svg class="bili-logo" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect width="40" height="40" rx="8" fill="white"/>
+                <!-- 修正后的天线，画在头顶外部 -->
+                <path d="M13 8L17 14" stroke="#FB7299" stroke-width="2.5" stroke-linecap="round"/>
+                <path d="M27 8L23 14" stroke="#FB7299" stroke-width="2.5" stroke-linecap="round"/>
+                <!-- 身体/脸 -->
+                <path d="M10 14H30V28H10V14Z" fill="#FB7299"/>
+                <circle cx="16" cy="20" r="1.5" fill="white"/>
+                <circle cx="24" cy="20" r="1.5" fill="white"/>
+                <path d="M18 24H22" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+            </svg>
+            <div class="brand-text">
+                <h1 class="art-title">BiliBili <span class="gradient-text">Summarize</span></h1>
+                <p class="slogan">掌握视频，深挖价值</p>
             </div>
         </div>
+        <div class="header-actions">
+            <div id="loginBtn" class="login-badge" title="B站账号登录状态">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                    <circle cx="12" cy="7" r="4"></circle>
+                </svg>
+                <span>登录B站</span>
+            </div>
+            <button id="homeBtn" class="btn-icon hidden" title="返回主页" onclick="goHome()">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                    <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                </svg>
+            </button>
+            <button id="guideBtn" class="btn-icon" title="使用指南">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+                    <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                </svg>
+            </button>
+            <button id="settingsBtn" class="btn-icon" title="全局设置">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="3"></circle>
+                    <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1V15a2 2 0 0 1-2-2 2 2 0 0 1 2-2v-.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+                </svg>
+            </button>
+            <a href="https://gitcode.com/mumu_xsy/Bilibili_Analysis_Helper" target="_blank" class="github-link">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="white">
+                    <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                </svg>
+            </a>
+        </div>
+    </header>
 
-        <p class="footer">
-            即将上线 · 敬请期待<br>
-            &copy; 2025 BiliBili Summarize
-        </p>
+    <div class="app-container">
+        <main class="main-content">
+            <!-- 搜索区域 -->
+            <section class="search-section">
+                <div class="search-box-container">
+                    <!-- 模式切换器 -->
+                    <div class="analysis-mode-switcher">
+                        <button class="mode-btn active" data-mode="research">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>
+                            深度研究
+                        </button>
+                        <button class="mode-btn" data-mode="video">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M10 8l6 4-6 4V8z"></path></svg>
+                            视频分析
+                        </button>
+                        <button class="mode-btn" data-mode="article">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+                            专题解析
+                        </button>
+                        <button class="mode-btn" data-mode="user">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                            用户画像
+                        </button>
+                    </div>
+                    
+                    <!-- 模式描述文本 (新) -->
+                    <div id="modeDescription" class="mode-description mode-research animate-fade-in">
+                        多维拆解，在海量信息中捕捉深度洞见。
+                    </div>
+                    
+                    <div class="search-box">
+                        <input type="text" id="videoUrl" placeholder="粘贴 Bilibili 视频链接或 BV 号..." autocomplete="off">
+                        <button id="analyzeBtn" class="btn-primary">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="11" cy="11" r="8"></circle>
+                                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                            </svg>
+                            开始分析
+                        </button>
+                    </div>
+
+                    <!-- 深度研究模式下的快捷历史按钮 -->
+                    <div id="researchHistoryShortcut" class="research-history-shortcut hidden">
+                        <button class="btn-text-link" onclick="showResearchHistory()">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                            查看以往研究报告
+                        </button>
+                    </div>
+
+                    <!-- 搜索结果下拉面板 (新) -->
+                    <div id="searchResultsPanel" class="search-results-panel hidden">
+                        <div class="results-header">
+                            <span id="resultsCount">找到 0 条相关结果</span>
+                            <button id="closeResultsBtn" class="btn-icon-small">×</button>
+                        </div>
+                        <div id="resultsList" class="results-list">
+                            <!-- 动态填充 -->
+                        </div>
+                    </div>
+                    <div id="loginHint" class="login-hint hidden">
+                        <span class="hint-icon">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path><polyline points="10 17 15 12 10 7"></polyline><line x1="15" y1="12" x2="3" y2="12"></line></svg>
+                        </span>
+                        <p>登录 B 站后分析，可解锁 <strong>高赞评论解析</strong> 与 <strong>完整弹幕舆情</strong></p>
+                        <a href="#" id="hintLoginBtn">立即登录</a>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 欢迎/功能展示区域 -->
+            <div id="welcomeSection" class="welcome-hero">
+                <div class="hero-content">
+                    <div class="hero-icon-grid">
+                        <div class="hero-item animate-up" style="animation-delay: 0.1s;">
+                            <div class="hero-icon-box pink">
+                                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                    <polyline points="14 2 14 8 20 8"></polyline>
+                                    <path d="M9 15l2 2 4-4"></path>
+                                </svg>
+                            </div>
+                            <h4>AI 深度总结</h4>
+                            <p>秒级提炼视频章节与核心干货</p>
+                        </div>
+                        <div class="hero-item animate-up" style="animation-delay: 0.2s;">
+                            <div class="hero-icon-box blue">
+                                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <rect x="2" y="7" width="20" height="15" rx="2" ry="2"></rect>
+                                    <polyline points="17 2 12 7 7 2"></polyline>
+                                    <path d="M12 11v6"></path>
+                                    <circle cx="12" cy="14.5" r="2.5"></circle>
+                                </svg>
+                            </div>
+                            <h4>视觉多模态</h4>
+                            <p>结合视频关键帧，画面细节不遗漏</p>
+                        </div>
+                        <div class="hero-item animate-up" style="animation-delay: 0.3s;">
+                            <div class="hero-icon-box purple">
+                                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                                    <circle cx="9" cy="10" r="0.5" fill="currentColor"></circle>
+                                    <circle cx="15" cy="10" r="0.5" fill="currentColor"></circle>
+                                </svg>
+                            </div>
+                            <h4>智能对话问答</h4>
+                            <p>针对视频内容，像聊天一样深挖细节</p>
+                        </div>
+                        <div class="hero-item animate-up" style="animation-delay: 0.4s;">
+                            <div class="hero-icon-box orange">
+                                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+                                    <polyline points="12 15 12 9 15 12"></polyline>
+                                </svg>
+                            </div>
+                            <h4>舆情价值分析</h4>
+                            <p>看透弹幕热梗与评论区高赞观点</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="init-recommendations">
+                    <h3 class="section-title">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"></path>
+                        </svg>
+                        今日热门视频推荐
+                    </h3>
+                    <div class="recommendations-container">
+                        <div id="initRelatedList" class="init-related-scroll">
+                            <!-- 动态插入初始推荐视频 -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 加载与进度 -->
+            <div id="loadingState" class="loading-state hidden">
+                <div class="bili-tv-loading">
+                    <svg class="bili-tv-svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                        <!-- 天线 (耳朵) - 移至外部且圆润 -->
+                        <path d="M35 20L45 35" stroke="#FB7299" stroke-width="6" stroke-linecap="round"/>
+                        <path d="M65 20L55 35" stroke="#FB7299" stroke-width="6" stroke-linecap="round"/>
+                        <!-- 电视机主体 -->
+                        <rect x="20" y="35" width="60" height="45" rx="12" fill="white" stroke="#FB7299" stroke-width="5"/>
+                        <!-- 面部表情 -->
+                        <circle cx="40" cy="55" r="3" fill="#FB7299"/>
+                        <circle cx="60" cy="55" r="3" fill="#FB7299"/>
+                        <path d="M45 65Q50 70 55 65" stroke="#FB7299" stroke-width="3" fill="none" stroke-linecap="round"/>
+                    </svg>
+                    <div class="loading-bar-container">
+                        <div class="loading-bar" id="progressBar"></div>
+                    </div>
+                </div>
+                <div class="loading-content-box">
+                    <p id="loadingText" class="loading-text">正在初始化...</p>
+                    <div id="streamingStatus" class="streaming-status hidden">
+                        <span class="pulse-dot"></span>
+                        <span id="streamingText">正在接收分析内容...</span>
+                        <span id="chunkCounter" class="chunk-counter">0</span>
+                    </div>
+                    <div id="loadingStepper" class="loading-stepper">
+                        <!-- 由脚本根据模式动态填充步骤 -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- 结果展示区域 -->
+            <div id="resultArea" class="result-container hidden">
+                <div class="content-wrapper">
+                    <!-- 左侧：侧边栏区域 -->
+                    <aside class="sidebar-area">
+                        <nav id="sidebarNav" class="sidebar-nav">
+                            <!-- 视频模式按钮 -->
+                            <button class="nav-btn active" data-tab="summary" data-show-on="video">
+                                <span class="icon-box"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg></span>
+                                内容总结
+                            </button>
+                            <button class="nav-btn" data-tab="danmaku" data-show-on="video">
+                                <span class="icon-box"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg></span>
+                                弹幕互动
+                            </button>
+                            <button class="nav-btn" data-tab="comments" data-show-on="video">
+                                <span class="icon-box"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg></span>
+                                评论解析
+                            </button>
+                            <button class="nav-btn" data-tab="subtitle" data-show-on="video">
+                                <span class="icon-box"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg></span>
+                                视频文本
+                            </button>
+
+                            <!-- 专栏模式按钮 -->
+                            <button class="nav-btn hidden" data-tab="article_analysis" data-show-on="article">
+                                <span class="icon-box"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path></svg></span>
+                                深度解析
+                            </button>
+                            <button class="nav-btn hidden" data-tab="article_content" data-show-on="article">
+                                <span class="icon-box"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg></span>
+                                专栏原文
+                            </button>
+
+                            <!-- 用户模式按钮 -->
+                            <button class="nav-btn hidden" data-tab="user_portrait" data-show-on="user">
+                                <span class="icon-box"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20v-6M6 20V10M18 20V4"></path></svg></span>
+                                风格画像
+                            </button>
+                            <button class="nav-btn hidden" data-tab="user_works" data-show-on="user">
+                                <span class="icon-box"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M10 8l6 4-6 4V8z"></path></svg></span>
+                                近期作品
+                            </button>
+                            
+                            <!-- 深度研究模式按钮 -->
+                            <button class="nav-btn hidden" data-tab="research_report" data-show-on="research">
+                                <span class="icon-box"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M2 12h20M12 2l10 10-10 10L2 12z"></path></svg></span>
+                                研究报告
+                            </button>
+                            <button class="nav-btn hidden" data-tab="research_process" data-show-on="research">
+                                <span class="icon-box"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg></span>
+                                思考过程
+                            </button>
+                            
+                            <!-- 历史报告：改为普通按钮，不再作为 TAB 切换 -->
+                            <button class="nav-btn-action hidden" data-show-on="research" onclick="showResearchHistory()">
+                                <span class="icon-box"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg></span>
+                                历史报告
+                            </button>
+
+                            <!-- 通用按钮 -->
+                            <button class="nav-btn" data-tab="chat" data-show-on="video article user research">
+                                <span class="icon-box"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg></span>
+                                智能问答
+                            </button>
+
+                        <!-- 相关视频推荐 (侧边栏) -->
+                        <div id="relatedSection" class="related-sidebar-section hidden">
+                            <h3 class="section-title">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path>
+                                </svg>
+                                相关推荐
+                            </h3>
+                            <div id="relatedList" class="related-vertical-list">
+                                <!-- 动态插入相关视频 -->
+                            </div>
+                        </div>
+                    </aside>
+
+                    <div class="main-content-column">
+                        <!-- 视频信息卡片 -->
+                        <div class="video-info-card">
+                            <div class="video-cover-wrapper">
+                                <img id="videoCover" src="" alt="Video Cover" class="video-cover">
+                                <span id="videoDuration" class="video-duration">00:00</span>
+                            </div>
+                            <div class="video-details">
+                                <h2 id="videoTitle" class="video-title">视频标题</h2>
+                                <div class="up-info">
+                                    <span class="up-name">
+                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                            <circle cx="12" cy="7" r="4"></circle>
+                                        </svg>
+                                        <span id="upName">UP主</span>
+                                    </span>
+                                </div>
+                                <div class="video-stats">
+                                    <span class="stat-item" title="播放量">
+                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                                        </svg>
+                                        <span id="viewCount">0</span>
+                                    </span>
+                                    <span class="stat-item" title="点赞数">
+                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"></path>
+                                        </svg>
+                                        <span id="likeCount">0</span>
+                                    </span>
+                                    <span class="stat-item" title="评论数">
+                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path>
+                                        </svg>
+                                        <span id="commentCount">0</span>
+                                    </span>
+                                    <span class="stat-item" title="弹幕数">
+                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                                        </svg>
+                                        <span id="danmakuCount">0</span>
+                                    </span>
+                                </div>
+                                <div class="video-card-actions">
+                                    <button id="reAnalyzeBtn" class="btn-small btn-outline">
+                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <path d="M23 4v6h-6"></path>
+                                            <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path>
+                                        </svg>
+                                        重新分析
+                                    </button>
+                                    <a id="watchBiliBtn" href="" target="_blank" class="btn-small btn-outline">
+                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                                            <polyline points="15 3 21 3 21 9"></polyline>
+                                            <line x1="10" y1="14" x2="21" y2="3"></line>
+                                        </svg>
+                                        跳转观看
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- UP主深度画像 (新功能) -->
+                        <div id="upPortraitCard" class="up-portrait-card hidden">
+                            <div class="portrait-header">
+                                <img id="upFace" src="" class="up-face">
+                                <div class="up-meta">
+                                    <h4 id="upNameDetail">UP主</h4>
+                                    <span id="upSign" class="up-sign">签名加载中...</span>
+                                </div>
+                                <div class="up-badge">AI 深度画像</div>
+                            </div>
+                            <div id="upPortraitContent" class="portrait-body markdown-body">
+                                正在分析UP主创作风格...
+                            </div>
+                        </div>
+
+                        <!-- 右侧内容展示区 -->
+                        <section class="content-display">
+                        <div class="toolbar">
+                            <div class="analysis-info">
+                                <span class="token-usage">Token消耗: <span id="tokenCount">0</span></span>
+                                <div id="analysisMeta" class="analysis-meta">
+                                    <!-- 由脚本根据模式动态填充元数据 -->
+                                </div>
+                            </div>
+                            <div class="tool-actions">
+                                <button id="copyBtn" class="btn-icon" title="复制当前内容">
+                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                    </svg>
+                                </button>
+                                <button id="downloadPdfBtn" class="btn-icon hidden" title="下载 PDF 报告">
+                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+                                </button>
+                                <button id="downloadBtn" class="btn-icon" title="下载Markdown">
+                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                        <polyline points="7 10 12 15 17 10"></polyline>
+                                        <line x1="12" y1="15" x2="12" y2="3"></line>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div id="tabContents">
+                            <!-- 视频专用 -->
+                            <div id="summaryContent" class="tab-pane active markdown-body">
+                                <div class="empty-state"><p>等待分析结果...</p></div>
+                            </div>
+                            <div id="danmakuContent" class="tab-pane markdown-body">
+                                <div id="danmakuWordCloudContainer" class="word-cloud-wrapper hidden">
+                                    <h3 class="section-title">
+                                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path></svg>
+                                        互动关键词云
+                                    </h3>
+                                    <div class="word-cloud-canvas-container"><canvas id="danmakuCanvas"></canvas></div>
+                                </div>
+                                <div id="danmakuAnalysisResult"></div>
+                            </div>
+                            <div id="commentsContent" class="tab-pane markdown-body">
+                                <div id="topCommentsList" class="top-comments-section"></div>
+                                <div id="commentsAnalysisResult"></div>
+                            </div>
+                            <div id="subtitleContent" class="tab-pane raw-text-pane">
+                                <pre id="rawSubtitleText"></pre>
+                            </div>
+
+                            <!-- 专栏专用 -->
+                            <div id="articleAnalysisContent" class="tab-pane markdown-body"></div>
+                            <div id="articleOriginalContent" class="tab-pane raw-text-pane"></div>
+
+                            <!-- 用户专用 -->
+                            <div id="userPortraitContentPane" class="tab-pane markdown-body"></div>
+                            <div id="userWorksContent" class="tab-pane">
+                                <div id="userWorksList" class="user-works-grid"></div>
+                            </div>
+
+                            <!-- 深度研究专用 -->
+            <div id="researchReportContent" class="tab-pane markdown-body">
+                <div class="empty-state">
+                    <p>等待深度研究开始...</p>
+                    <button class="history-btn" onclick="showResearchHistory()">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                        查看历史研究报告
+                    </button>
+                </div>
+            </div>
+            <div id="researchProcessContent" class="tab-pane">
+                <div class="timeline-controls">
+                    <div class="timeline-controls-title">研究过程</div>
+                    <div class="timeline-controls-buttons">
+                        <button id="drCollapseCompletedBtn" class="timeline-control-btn ui-focusable" type="button" data-state="off">折叠已完成：关</button>
+                        <button id="drExpandAllBtn" class="timeline-control-btn ui-focusable" type="button">展开全部</button>
+                        <button id="drAutoScrollBtn" class="timeline-control-btn ui-focusable" type="button" data-state="on">自动滚动：开</button>
+                        <button id="drClearBtn" class="timeline-control-btn ui-focusable" type="button">清空</button>
+                    </div>
+                </div>
+                <div id="researchTimeline" class="research-timeline">
+                    <!-- 动态插入思考过程和工具调用 -->
+                </div>
+            </div>
+
+            <!-- 通用 -->
+            <div id="chatContent" class="tab-pane chat-pane">
+                <div class="chat-container">
+                    <div id="chatMessages" class="chat-messages">
+                        <div class="message assistant">
+                            <div class="message-content">你好！我是你的视频助手。我已经阅读了视频分析报告，你可以问我关于视频内容的任何问题。</div>
+                        </div>
+                    </div>
+                    <div class="chat-input-area">
+                        <textarea id="chatInput" placeholder="输入关于视频内容的问题..."></textarea>
+                        <button id="sendMsgBtn" class="btn-primary">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <line x1="22" y1="2" x2="11" y2="13"></line>
+                                <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+            </div>
+        </main>
+
+        <!-- 页面底部 -->
+        <footer class="main-footer">
+            <div class="footer-container">
+                <div class="footer-tags">
+                    <span class="tag"># AI Summary</span>
+                    <span class="tag"># Multimodal</span>
+                    <span class="tag"># Video Analysis</span>
+                    <span class="tag"># Bilibili</span>
+                </div>
+                
+                <div class="footer-content">
+                    <div class="footer-section">
+                        <h5>关于项目</h5>
+                        <p>BiliBili Summarize 是一款基于大模型的视频内容理解工具，旨在帮助用户快速获取视频干货，深挖视频价值。</p>
+                        <div class="footer-links">
+                            <a href="https://gitcode.com/mumu_xsy/Bilibili_Analysis_Helper" target="_blank">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+                                GitCode 仓库
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <div class="footer-section">
+                        <h5>开发者 & 感谢</h5>
+                        <p>Created by <a href="https://gitcode.com/mumu_xsy" target="_blank" class="highlight" style="text-decoration: none;">mumu_xsy</a></p>
+                        <p>感谢 <a href="https://github.com/Nemo2011/bilibili-api" target="_blank" class="highlight" style="text-decoration: none;">Bilibili-API</a> 社区及其贡献者提供的技术支持。</p>
+                    </div>
+
+                    <div class="footer-section">
+                        <h5>算力与模型支持</h5>
+                        <div class="vendor-grid">
+                            <a href="https://cloud.siliconflow.cn/" target="_blank" class="vendor-item" title="SiliconFlow 提供强大算力加速" style="text-decoration: none; color: inherit;">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M12.463 3.125c-.244-.167-.577-.167-.821 0l-7.394 5c-.267.18-.423.475-.423.792v6.248c0 .317.156.612.423.792l7.394 5c.244.167.577.167.821 0l7.394-5c.267-.18.423-.475.423-.792V8.917c0-.317-.156-.612-.423-.792l-7.394-5z" fill="currentColor" fill-opacity=".15"/>
+                                    <path d="M11.75 8a.75.75 0 0 1 .75.75v3.25h3.25a.75.75 0 0 1 0 1.5h-4a.75.75 0 0 1-.75-.75v-4a.75.75 0 0 1 .75-.75z" fill="currentColor"/>
+                                    <path d="M4.671 8.917c0-.317.156-.612.423-.792l7.394-5c.244-.167.577-.167.821 0l7.394 5c.267.18.423.475.423.792v6.248c0 .317-.156.612-.423.792l-7.394 5c-.244.167-.577.167-.821 0l-7.394-5a.952.952 0 0 1-.423-.792V8.917zm7.394-3.834L5.86 9.225v5.632l6.205 4.198 6.205-4.198V9.225l-6.205-4.142z" fill="currentColor"/>
+                                </svg>
+                                <span>SiliconCloud</span>
+                            </a>
+                            <a href="https://tongyi.aliyun.com/" target="_blank" class="vendor-item" title="通义千问 Qwen 系列模型提供核心智能" style="text-decoration: none; color: inherit;">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18z" fill="currentColor" fill-opacity=".15"/>
+                                    <path d="M12 4.5a7.5 7.5 0 1 1 0 15 7.5 7.5 0 0 1 0-15z" stroke="currentColor" stroke-width="1.5"/>
+                                    <path d="M8.5 12h7M12 8.5v7" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                                    <path d="M10 10l4 4M14 10l-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                                </svg>
+                                <span>Qwen</span>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="footer-section">
+                        <h5>免责声明</h5>
+                        <ul class="disclaimer-list">
+                            <li>AI 生成的视频分析结果仅供参考，不代表本项目观点，亦不保证绝对准确性。</li>
+                            <li>本项目仅供学习交流使用，请在遵守相关法律法规及 B 站协议的前提下使用。</li>
+                            <li>视频及评论版权归原作者和 Bilibili 所有，本项目不存储任何视频源文件。</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="footer-bottom">
+                    <p>&copy; 2025 BiliBili Summarize. 仅供学习交流使用。</p>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- 登录模态框 -->
+    <div id="loginModal" class="modal hidden">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h2>B站扫码登录</h2>
+            <div id="qrcodeContainer" class="qrcode-container">
+                <div id="qrcode" class="qrcode-img"></div>
+                <p id="loginStatus">请使用Bilibili App扫码</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- 历史研究报告弹窗 -->
+    <div id="historyModal" class="modal-overlay hidden">
+        <div class="modal-content history-modal">
+            <div class="modal-header">
+                <h3>历史研究报告</h3>
+                <button class="close-btn" onclick="closeHistoryModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div id="historyList" class="history-list">
+                    <!-- 动态加载历史列表 -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 提示框 -->
+    <div id="toast" class="toast hidden">提示信息</div>
+
+    <!-- 设置侧边抽屉 -->
+    <div id="settingsDrawer" class="drawer hidden">
+        <div class="drawer-overlay"></div>
+        <div class="drawer-content">
+            <div class="drawer-header">
+                <h3>全局设置</h3>
+                <button class="close-drawer">&times;</button>
+            </div>
+            <div class="drawer-body">
+                <div class="settings-group">
+                    <h4>AI 服务配置</h4>
+                    <div class="setting-item">
+                        <label>API 代理地址 (Base URL)</label>
+                        <input type="text" id="apiBaseInput" placeholder="https://api.openai.com/v1">
+                    </div>
+                    <div class="setting-item">
+                        <label>API Key</label>
+                        <input type="password" id="apiKeyInput" placeholder="sk-...">
+                        <p class="setting-hint">您可以前往 <a href="https://cloud.siliconflow.cn/me/account/ak" target="_blank">SiliconFlow 控制台</a> 免费注册并获取 API Key</p>
+                    </div>
+                    <div class="setting-item">
+                        <label>默认分析模型 (VL/多模态)</label>
+                        <input type="text" id="modelInput" placeholder="例如: Qwen/Qwen2-VL-72B-Instruct">
+                    </div>
+                    <div class="setting-item">
+                        <label>对话问答模型 (长文本/逻辑)</label>
+                        <input type="text" id="qaModelInput" placeholder="例如: Qwen/Qwen2.5-72B-Instruct">
+                    </div>
+                    <div class="setting-item">
+                        <label>深度研究模型 (Reasoning/Thinking)</label>
+                        <input type="text" id="deepResearchModelInput" placeholder="例如: moonshotai/Kimi-K2-Thinking">
+                    </div>
+                    <div class="setting-item">
+                        <label>Exa Search API Key (用于深度联网搜索)</label>
+                        <input type="password" id="exaApiKeyInput" placeholder="exa-...">
+                        <p class="setting-hint">
+                            💡 提示：前往 <a href="https://dashboard.exa.ai/" target="_blank" style="color: var(--bili-blue); font-weight: bold; text-decoration: underline;">Exa.ai 官网</a> <strong>免费注册</strong> 即可获得每月免费额度的 API Key，让 Agent 具备全网深度搜索与实时资讯获取能力。
+                        </p>
+                    </div>
+                </div>
+                <div class="settings-group">
+                    <h4>界面偏好</h4>
+                    <div class="setting-item" style="display: flex; justify-content: space-between; align-items: center;">
+                        <label style="margin-bottom: 0;">深色模式</label>
+                        <label class="switch">
+                            <input type="checkbox" id="darkModeToggle">
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="drawer-footer">
+                <button id="saveSettingsBtn" class="btn-primary" style="height: 40px; padding: 0 20px;">保存设置</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 前端工具函数库 (重构模块) -->
+    <script src="js/utils/helpers.js"></script>
+
+    <!-- API 模块 (重构提取) -->
+    <script src="js/api/bilibili-api.js"></script>
+    <script src="js/api/video-api.js"></script>
+    <script src="js/api/research-api.js"></script>
+
+    <!-- UI 模块 (重构提取) -->
+    <script src="js/ui/progress.js"></script>
+    <script src="js/ui/tabs.js"></script>
+    <script src="js/ui/modes.js"></script>
+    <script src="js/ui/deep-research-ui.js"></script>
+
+    <!-- 主程序脚本 -->
+    <script src="script.js"></script>
+    <!-- 使用指南模态框 -->
+    <div id="guideModal" class="modal hidden">
+        <div class="modal-content guide-modal-content">
+            <div class="modal-header guide-header">
+                <div class="guide-title-area">
+                    <svg class="guide-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                        <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+                        <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+                    </svg>
+                    <h2>使用指南 & 声明</h2>
+                </div>
+                <button class="close-modal guide-close">&times;</button>
+            </div>
+            <div id="guideContent" class="modal-body guide-body markdown-body">
+                <!-- 由脚本渲染 -->
+            </div>
+            <div class="modal-footer guide-footer">
+                <div class="support-area">
+                    <span>觉得好用？去点个 Star 吧 ⭐</span>
+                    <div class="support-btns">
+                        <a href="https://gitcode.com/mumu_xsy/Bilibili_Analysis_Helper" target="_blank" class="btn-mini btn-primary-mini">GitCode 仓库</a>
+                        <button id="guideDonateBtn" class="btn-mini btn-outline-mini">❤️ 赞助支持</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 捐赠二维码弹窗 (复用或新建) -->
+    <div id="donateModal" class="modal hidden">
+        <div class="modal-content donate-modal-content">
+            <div class="modal-header">
+                <h2>❤️ 感谢你的支持</h2>
+                <button id="closeDonateBtn" class="close-modal">&times;</button>
+            </div>
+            <div class="modal-body donate-body">
+                <img src="assets/donate.jpg" alt="捐赠二维码" class="donate-qr">
+                <p>你的打赏是项目持续更新的最大动力！</p>
+            </div>
+        </div>
     </div>
 </body>
 </html>

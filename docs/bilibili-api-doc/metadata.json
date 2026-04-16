@@ -1,0 +1,14 @@
+{
+  "download_time": "2025-12-24T00:40:13.661552",
+  "source": "https://raw.githubusercontent.com/nemo2011/bilibili-api/main/docs",
+  "statistics": {
+    "total": 93,
+    "success": 49,
+    "failed": 44
+  },
+  "categories": {
+    "basic": 8,
+    "examples": 42,
+    "modules": 43
+  }
+}

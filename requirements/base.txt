@@ -1,0 +1,29 @@
+# Core Web Framework
+fastapi>=0.115.0
+uvicorn>=0.30.0
+
+# AI/ML Dependencies
+openai>=1.10.0
+
+# Bilibili API
+bilibili-api-python>=17.4.0
+
+# HTTP Client and Async
+aiohttp>=3.9.0
+requests>=2.31.0
+
+# Image and Video Processing
+opencv-python>=4.8.0
+Pillow>=10.0.0
+
+# Data Processing
+numpy>=1.24.0
+
+# QR Code Generation
+qrcode>=7.4.0
+
+# Configuration
+python-dotenv>=1.0.0
+
+# Markdown Utilities
+markdown2>=2.4.10
