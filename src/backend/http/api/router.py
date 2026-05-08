@@ -35,15 +35,30 @@ API 路由聚合模块 (src/backend/http/api/router.py)
 
 from fastapi import APIRouter
 
-from src.backend.http.api.routes import analyze, bilibili, qa, research, settings, user
+from src.backend.http.api.routes import (
+    analyze,
+    health,
+    image_proxy,
+    login,
+    qa,
+    research,
+    search,
+    settings,
+    user,
+    video,
+)
 
 # 创建主 API 路由器
 api_router = APIRouter()
 
 # 注册所有子路由
 api_router.include_router(analyze.router)
-api_router.include_router(bilibili.router)
+api_router.include_router(health.router)
+api_router.include_router(image_proxy.router)
+api_router.include_router(login.router)
 api_router.include_router(qa.router)
 api_router.include_router(research.router)
+api_router.include_router(search.router)
 api_router.include_router(settings.router)
 api_router.include_router(user.router)
+api_router.include_router(video.router)

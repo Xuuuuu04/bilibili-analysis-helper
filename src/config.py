@@ -33,9 +33,8 @@ model = Config.OPENAI_MODEL
 ================================================================================
 """
 
-import os
-import secrets
 import logging
+import os
 
 from dotenv import load_dotenv
 

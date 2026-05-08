@@ -1,0 +1,29 @@
+- [x] ai_helpers.py 已拆分为 cache.py / concurrency.py / openai_streaming.py / web_search.py / report_storage.py
+- [x] ai_helpers.py 作为 re-export 兼容层，原有导入路径仍可用
+- [x] 所有引用 ai_helpers 的模块已更新为直接导入新模块
+- [x] AIService 已拆分为 VideoAnalysisService / ChatService / ArticleAnalysisService / UserPortraitService
+- [x] AIService 作为薄门面委托给子服务，所有原有方法签名不变
+- [x] dependencies.py 已适配新子服务结构
+- [x] ToolRegistry 状态改为实例属性，不再使用类属性全局状态
+- [x] DeepResearchAgent 接受 ToolRegistry 实例参数，不再调用全局 clear()
+- [x] bilibili.py 路由已拆分为 search.py / video.py / image_proxy.py / health.py / login.py
+- [x] router.py 已注册所有新路由文件，API 端点路径和响应格式不变
+- [x] conftest.py 包含 mock_openai_client / mock_bilibili_service / mock_credential / app_client fixture
+- [x] test_video_analysis_service.py 覆盖流式/同步分析生成
+- [x] test_chat_service.py 覆盖 chat_stream / context_qa_stream
+- [x] test_article_analysis_service.py 覆盖专栏分析流
+- [x] test_user_portrait_service.py 覆盖 UP主画像 / 总结 / 思维导图
+- [x] test_cache.py 覆盖 TTLCache 读写/过期/并发安全
+- [x] test_concurrency.py 覆盖信号量控制
+- [x] test_openai_streaming.py 覆盖流式调用重试逻辑
+- [x] test_web_search.py 覆盖 Exa 搜索（mock 外部请求）
+- [x] test_bilibili_service.py 覆盖门面委托逻辑
+- [x] test_content_service.py 覆盖专栏/Opus 内容获取
+- [x] test_login_service.py 覆盖扫码登录流程
+- [x] test_search_service.py 覆盖搜索功能
+- [x] test_tool_registry.py 覆盖注册/查询/执行/实例隔离
+- [x] test_data_source_adapter.py 覆盖数据源适配器/工厂
+- [x] func_test.py 已拆分为 test_integration_analyze.py / test_integration_search.py / test_integration_settings.py
+- [x] pytest tests/ -v 全部通过（121 passed）
+- [x] ruff check src/ 无 lint 错误
+- [x] 应用可正常启动，API 端点正常响应

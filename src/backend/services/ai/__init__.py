@@ -9,8 +9,6 @@ from src.backend.services.ai.ai_helpers import (
     extract_tokens_from_response,
     generate_bili_style_pdf,
     parse_analysis_response,
-    save_research_report,
-    web_search_exa,
 )
 from src.backend.services.ai.ai_service import AIService
 from src.backend.services.ai.prompts import (
@@ -22,6 +20,8 @@ from src.backend.services.ai.prompts import (
     get_user_portrait_prompt,
     get_video_analysis_prompt,
 )
+from src.backend.services.ai.report_storage import save_research_report
+from src.backend.services.ai.web_search import web_search_exa
 
 __all__ = [
     # Main Service

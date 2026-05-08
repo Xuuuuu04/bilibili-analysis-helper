@@ -10,10 +10,11 @@ from typing import Dict, Generator
 
 from openai import OpenAI
 
-from src.backend.services.ai.ai_helpers import openai_chat_completions_stream, save_research_report
+from src.backend.services.ai.openai_streaming import openai_chat_completions_stream
 from src.backend.services.ai.prompts import (
     get_deep_research_system_prompt,
 )
+from src.backend.services.ai.report_storage import save_research_report
 from src.backend.services.ai.toolkit import ToolRegistry
 from src.backend.services.ai.toolkit.tools import (
     AnalyzeVideoTool,
@@ -48,31 +49,18 @@ class DeepResearchAgent:
     """
 
     def __init__(
-        self, client: OpenAI, model: str, vl_model: str = None, enable_thinking: bool = False
+        self, client: OpenAI, model: str, vl_model: str = None, enable_thinking: bool = False, tool_registry: ToolRegistry = None
     ):
-        """
-        初始化深度研究 Agent
-
-        Args:
-            client: OpenAI客户端
-            model: 使用的模型（深度研究）
-            vl_model: 视觉语言模型（可选，用于视频帧分析）
-            enable_thinking: 是否启用思考模式（用于支持thinking的混合态模型）
-        """
         self.client = client
         self.model = model
-        self.vl_model = vl_model or model  # 如果未指定，使用普通模型
+        self.vl_model = vl_model or model
         self.enable_thinking = enable_thinking
-
-        # 初始化工具注册中心
+        self._registry = tool_registry or ToolRegistry()
         self._initialize_tools()
 
     def _initialize_tools(self):
-        """初始化并注册所有工具"""
-        # 清空之前的注册
-        ToolRegistry.clear()
+        self._registry.clear()
 
-        # 注册核心工具
         tools = [
             SearchVideosTool(),
             AnalyzeVideoTool(),
@@ -93,11 +81,10 @@ class DeepResearchAgent:
         ]
 
         for tool in tools:
-            ToolRegistry.register(tool)
-            # 设置AI客户端
+            self._registry.register(tool)
             tool.set_ai_client(self.client, self.model)
 
-        logger.info(f"[DeepResearchAgent] 已注册 {ToolRegistry.count()} 个工具")
+        logger.info(f"[DeepResearchAgent] 已注册 {len(self._registry.get_all())} 个工具")
 
     def stream_research(self, topic: str, bilibili_service) -> Generator[Dict, None, None]:
         """
@@ -111,8 +98,8 @@ class DeepResearchAgent:
             Dict: 包含状态、进度、内容等信息的字典
         """
         try:
-            # 设置工具的bilibili_service
-            ToolRegistry.set_services(bilibili_service=bilibili_service)
+            for tool in self._registry.get_all().values():
+                tool.set_bilibili_service(bilibili_service)
 
             run_id = uuid.uuid4().hex
 
@@ -169,7 +156,7 @@ class DeepResearchAgent:
 
             system_prompt = get_deep_research_system_prompt(topic)
 
-            tools = ToolRegistry.list_tools_schema()
+            tools = self._registry.get_openai_tools()
 
             messages = [
                 {"role": "system", "content": system_prompt},
@@ -399,7 +386,7 @@ class DeepResearchAgent:
                         try:
                             if bvid and ("bilibili.com" in bvid or "http" in bvid):
                                 bvid = extract_bvid(bvid) or bvid
-                            tool = ToolRegistry.get_tool("analyze_video")
+                            tool = self._registry.get("analyze_video")
                             if not tool:
                                 progress_queue.put(
                                     {
@@ -591,7 +578,7 @@ class DeepResearchAgent:
                     )
 
                     try:
-                        tool = ToolRegistry.get_tool(func_name)
+                        tool = self._registry.get(func_name)
                         if not tool:
                             result = f"工具不存在: {func_name}"
                             yield _emit({"type": "error", "error": result}, tool_call["id"])
@@ -660,7 +647,10 @@ class DeepResearchAgent:
                             else:
                                 result = f"执行工具出错: {tool_error or '未知错误'}"
                         else:
-                            tool_result = run_async(ToolRegistry.execute_tool(func_name, **args))
+                            try:
+                                tool_result = run_async(self._registry.execute(func_name, **args))
+                            except Exception as e:
+                                tool_result = {"type": "error", "tool": func_name, "error": str(e)}
                             if tool_result.get("type") == "error":
                                 result = f"执行工具出错: {tool_result.get('error')}"
                                 yield _emit(

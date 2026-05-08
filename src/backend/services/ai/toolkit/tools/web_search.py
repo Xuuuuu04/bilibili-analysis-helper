@@ -4,8 +4,8 @@
 
 from typing import Dict
 
-from src.backend.services.ai.ai_helpers import web_search_exa
 from src.backend.services.ai.toolkit.base_tool import BaseTool
+from src.backend.services.ai.web_search import web_search_exa
 from src.backend.utils.logger import get_logger
 
 logger = get_logger(__name__)

@@ -5,11 +5,9 @@
 import asyncio
 from typing import Dict, Generator
 
-from src.backend.services.ai.ai_helpers import (
-    BILIBILI_CACHE,
-    BILIBILI_FRAMES_SEMAPHORE,
-    openai_chat_completions_stream,
-)
+from src.backend.services.ai.cache import BILIBILI_CACHE
+from src.backend.services.ai.concurrency import BILIBILI_FRAMES_SEMAPHORE
+from src.backend.services.ai.openai_streaming import openai_chat_completions_stream
 from src.backend.services.ai.toolkit.base_tool import StreamableTool
 from src.backend.utils.bilibili_helpers import extract_bvid
 from src.backend.utils.logger import get_logger

@@ -65,6 +65,7 @@ from src.backend.http.usecases.research_service import ResearchService
 from src.backend.http.usecases.settings_service import SettingsService
 from src.backend.http.usecases.user_service import UserService
 from src.backend.services.ai import AIService
+from src.backend.services.ai.toolkit import ToolRegistry
 from src.backend.services.bilibili import BilibiliService
 from src.backend.services.bilibili.login_service import LoginService
 
@@ -92,6 +93,11 @@ def get_ai_service() -> AIService:
         return AIService()
     except ValueError as exc:
         raise BadRequestError(str(exc)) from exc
+
+
+@lru_cache(maxsize=1)
+def get_tool_registry() -> ToolRegistry:
+    return ToolRegistry()
 
 
 @lru_cache(maxsize=1)
