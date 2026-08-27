@@ -1,3 +1,5 @@
+
+
 <div align="center">
   <h1>BiliInsight | AI 视频深度分析助手</h1>
   <img src="assets/logo.svg" width="200" alt="BiliInsight Logo">
@@ -81,6 +83,7 @@
    ```bash
    uvicorn asgi:app --reload --host 0.0.0.0 --port 5001
    ```
+   生产环境可移除 `--reload`，并按需设置 `--workers`。
    访问 `http://localhost:5001` 即可开始使用。
 
 ## 🏗️ 项目结构
@@ -137,4 +140,4 @@ Created by [mumu_xsy](https://gitcode.com/mumu_xsy) | [项目仓库](https://git
 - 当前版本可构建/可运行，后续迭代以 issue 与提交记录持续公开追踪。
 
 ## 目录结构
-- 结构说明：[`docs/PROJECT_STRUCTURE.md`](./docs/PROJECT_STRUCTURE.md)
+- 结构说明：[`docs/PROJECT_STRUCTURE.md`](./docs/PROJECT_STRUCTURE.md`)
